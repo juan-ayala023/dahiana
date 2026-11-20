@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+/* El modo oscuro (fase 7) se activa con la clase .dark en <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* -----------------------------------------------------------------------------
+   Tokens de diseño · Florece
+   ----------------------------------------------------------------------------- */
+:root {
+  --background: #fff8f5; /* crema rosado */
+  --surface: #ffffff;
+  --shadow-surface: 0 8px 30px rgba(217, 123, 166, 0.12);
+
+  --primary: #d97ba6; /* rosa orquídea (acentos, anillos, decoración) */
+  --primary-strong: #b44d7e; /* versión AA para fondos de botón con texto blanco */
+  --primary-deep: #9a3f6c;
+  --primary-soft: #f6d6e4; /* rosa palo */
+  --lavender: #c9b6e4;
+  --peach: #ffd3b6;
+  --income: #8fd5b6; /* menta suave */
+  --expense: #ff9aa8; /* coral suave */
+
+  --text: #4a3540; /* ciruela oscuro, nunca negro */
+  --text-muted: #7a626d; /* versión AA del #9C8590 para texto secundario */
+  --text-faint: #9c8590; /* placeholders y decoración */
+
+  --border: #f1dde6;
+  --ring: #d97ba6;
+  --danger: #c2415a;
+
+  --gradient-hero: linear-gradient(135deg, #f6d6e4 0%, #e8d5f2 50%, #ffe4d6 100%);
+  --gradient-primary: linear-gradient(135deg, #b44d7e 0%, #963a68 100%); /* texto blanco ≥ 4.8:1 */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-deep: var(--primary-deep);
+  --color-primary-soft: var(--primary-soft);
+  --color-lavender: var(--lavender);
+  --color-peach: var(--peach);
+  --color-income: var(--income);
+  --color-expense: var(--expense);
+  --color-foreground: var(--text);
+  --color-muted-foreground: var(--text-muted);
+  --color-faint: var(--text-faint);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-danger: var(--danger);
+
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+
+  --shadow-soft: var(--shadow-surface);
+  --shadow-glow: 0 10px 40px rgba(217, 123, 166, 0.35);
+
+  --radius-4xl: 2rem;
+}
+
+/* Utilidades de marca */
+@utility bg-hero {
+  background-image: var(--gradient-hero);
+}
+
+@utility bg-brand {
+  background-image: var(--gradient-primary);
+}
+
+@utility glass {
+  background-color: rgb(255 255 255 / 0.65);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  border: 1px solid rgb(255 255 255 / 0.7);
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100dvh;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background-color: var(--primary-soft);
+    color: var(--text);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
