@@ -235,7 +235,7 @@ export function QuickAddSheet({ open, initialTipo, editing, onClose }: QuickAddS
                 animate={{ scale: [0.3, 1.15, 1] }}
                 transition={{ duration: 0.45 }}
               >
-                <Check className="size-12 text-white" strokeWidth={3} />
+                <Check className="size-12 text-on-brand" strokeWidth={3} />
               </motion.div>
               <p className="font-display text-xl font-semibold">¡Listo!</p>
             </motion.div>

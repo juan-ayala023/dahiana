@@ -106,7 +106,7 @@ export function AchievementsView({ unlocked, dates, today, justUnlocked }: Props
                 )}
               >
                 {isNew ? (
-                  <span className="absolute right-3 top-3 rounded-full bg-primary-strong px-2 py-0.5 text-[10px] font-bold text-white">
+                  <span className="absolute right-3 top-3 rounded-full bg-primary-strong px-2 py-0.5 text-[10px] font-bold text-on-brand">
                     ¡Nuevo!
                   </span>
                 ) : null}

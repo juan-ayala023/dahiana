@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F6D6E4"/>
+      <stop offset="50%" stop-color="#E8D5F2"/>
+      <stop offset="100%" stop-color="#FFE4D6"/>
+    </linearGradient>
+    <linearGradient id="petal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F6D6E4"/>
+      <stop offset="55%" stop-color="#D97BA6"/>
+      <stop offset="100%" stop-color="#B44D7E"/>
+    </linearGradient>
+    <radialGradient id="core" cx="0.4" cy="0.35" r="0.7">
+      <stop offset="0%" stop-color="#FFF1E6"/>
+      <stop offset="100%" stop-color="#FFC49E"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <g transform="translate(32 32) scale(0.78) translate(-32 -32)">
+    <ellipse cx="32" cy="18" rx="10" ry="15" fill="url(#petal)" opacity="0.95" transform="rotate(0 32 32)"/>
+    <ellipse cx="32" cy="18" rx="10" ry="15" fill="url(#petal)" opacity="0.95" transform="rotate(72 32 32)"/>
+    <ellipse cx="32" cy="18" rx="10" ry="15" fill="url(#petal)" opacity="0.95" transform="rotate(144 32 32)"/>
+    <ellipse cx="32" cy="18" rx="10" ry="15" fill="url(#petal)" opacity="0.95" transform="rotate(216 32 32)"/>
+    <ellipse cx="32" cy="18" rx="10" ry="15" fill="url(#petal)" opacity="0.95" transform="rotate(288 32 32)"/>
+    <circle cx="32" cy="32" r="8" fill="url(#core)"/>
+  </g>
+</svg>

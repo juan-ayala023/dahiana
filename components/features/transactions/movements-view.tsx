@@ -144,7 +144,7 @@ export function MovementsView({ monthKey, transactions }: { monthKey: string; tr
                   onClick={() => setCategoryId(active ? null : c.id)}
                   className={cn(
                     "flex h-11 shrink-0 items-center gap-1.5 rounded-full px-4 text-sm font-semibold transition-colors",
-                    active ? "bg-primary-strong text-white" : "bg-surface text-foreground shadow-soft",
+                    active ? "bg-primary-strong text-on-brand" : "bg-surface text-foreground shadow-soft",
                   )}
                 >
                   <span aria-hidden>{c.emoji}</span>

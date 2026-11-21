@@ -5,7 +5,7 @@ import { announceAchievements } from "@/components/features/achievements/announc
 import { streakStats } from "@/lib/finance/streak";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Settings } from "lucide-react";
 import { AnimatedNumber } from "@/components/ui/animated-number";
 import { Button } from "@/components/ui/button";
 import { useTransactions } from "@/components/features/transactions/transactions-provider";
@@ -132,15 +132,26 @@ export function Dashboard({ profile, today, greeting, data, school, justUnlocked
   return (
     <div className="flex flex-col gap-5">
       <motion.header {...fadeUp(0)} className="flex items-center gap-3">
-        <span className="flex size-12 items-center justify-center rounded-full bg-primary-soft text-2xl" aria-hidden>
-          {profile.avatar_emoji}
-        </span>
-        <div className="min-w-0">
+        <Link
+          href="/perfil"
+          className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary-soft text-2xl active:scale-95"
+          aria-label="Mi perfil"
+        >
+          <span aria-hidden>{profile.avatar_emoji}</span>
+        </Link>
+        <div className="min-w-0 flex-1">
           <p className="text-sm text-muted-foreground">
             {greeting.text} {greeting.emoji}
           </p>
           <h1 className="truncate font-display text-2xl font-semibold">{profile.nombre}</h1>
         </div>
+        <Link
+          href="/perfil"
+          className="flex size-11 shrink-0 items-center justify-center rounded-full bg-surface shadow-soft active:scale-95"
+          aria-label="Ajustes"
+        >
+          <Settings className="size-5 text-muted-foreground" aria-hidden />
+        </Link>
       </motion.header>
       <motion.p {...fadeUp(1)} className="-mt-2 text-muted-foreground">
         {mood}

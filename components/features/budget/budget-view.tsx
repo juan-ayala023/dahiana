@@ -357,7 +357,7 @@ export function BudgetView({ monthKey, isCurrentMonth, ingresoEstimado, data }: 
                   <p
                     className={cn(
                       "mt-1.5 text-xs font-semibold",
-                      status.level === "over" ? "text-danger" : status.pct >= 80 ? "text-[#9A5A1F]" : "text-muted-foreground",
+                      status.level === "over" ? "text-danger" : status.pct >= 80 ? "text-warn" : "text-muted-foreground",
                     )}
                   >
                     {status.level === "over"

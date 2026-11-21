@@ -81,7 +81,7 @@ export function Sheet({ open, onClose, label, children, className }: SheetProps)
               onPointerDown={(e) => dragControls.start(e)}
               aria-hidden
             >
-              <span className="h-1.5 w-11 rounded-full bg-[#4A3540]/15" />
+              <span className="h-1.5 w-11 rounded-full bg-foreground/15" />
             </div>
             <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-5 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
               {children}

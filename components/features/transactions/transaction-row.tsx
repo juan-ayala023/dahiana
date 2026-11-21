@@ -65,7 +65,7 @@ export function TransactionRow({ tx, category, isOpen, onOpenChange, onEdit, onD
           type="button"
           tabIndex={isOpen ? 0 : -1}
           onClick={onDelete}
-          className="flex flex-1 flex-col items-center justify-center gap-0.5 bg-expense text-xs font-bold text-[#6B1F2E]"
+          className="flex flex-1 flex-col items-center justify-center gap-0.5 bg-expense text-xs font-bold text-on-expense"
         >
           <Trash2 className="size-5" aria-hidden />
           Eliminar

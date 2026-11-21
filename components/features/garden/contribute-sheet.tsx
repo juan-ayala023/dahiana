@@ -54,7 +54,7 @@ export function ContributeSheet({ open, onClose, goal, suggested, onSubmit }: Co
               aria-pressed={monto === v}
               className={cn(
                 "flex h-11 items-center rounded-full px-4 text-sm font-semibold tabular",
-                monto === v ? "bg-primary-strong text-white" : "bg-white/80 text-foreground shadow-soft",
+                monto === v ? "bg-primary-strong text-on-brand" : "bg-white/80 text-foreground shadow-soft",
               )}
             >
               {v === goal.restante ? "Todo · " : v === suggested ? "Sugerido · " : ""}${formatNumber(v)}

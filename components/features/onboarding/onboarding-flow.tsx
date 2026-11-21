@@ -448,7 +448,7 @@ function StepLayout({
       <h1 className="mt-4 font-display text-3xl font-semibold leading-tight">{title}</h1>
       <p className="mt-2 text-muted-foreground">{subtitle}</p>
       <div className="mt-6 flex-1">{children}</div>
-      <div className="sticky bottom-0 -mx-5 mt-4 bg-gradient-to-t from-[#FCEFF3] via-[#FCEFF3]/95 to-transparent px-5 pb-1 pt-6">
+      <div className="sticky bottom-0 -mx-5 mt-4 bg-gradient-to-t from-background via-background/95 to-transparent px-5 pb-1 pt-6">
         {footer}
       </div>
     </div>

@@ -65,7 +65,7 @@ export function BottomNav() {
             whileTap={{ scale: 0.88 }}
             whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 500, damping: 25 }}
-            className="-mt-8 flex size-16 items-center justify-center rounded-full bg-brand text-white shadow-glow ring-4 ring-background"
+            className="-mt-8 flex size-16 items-center justify-center rounded-full bg-brand text-on-brand shadow-glow ring-4 ring-background"
             aria-label="Registrar gasto o ingreso"
           >
             <Plus className="size-8" strokeWidth={2.5} aria-hidden />

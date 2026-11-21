@@ -73,7 +73,7 @@ export function LessonPlayer({ lesson, next, bestScore }: Props) {
 
   return (
     <main
-      className="relative mx-auto flex min-h-dvh w-full max-w-md flex-col px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))]"
+      className="light-scope relative mx-auto flex min-h-dvh w-full max-w-md flex-col px-5 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-[max(1rem,env(safe-area-inset-top))]"
       style={{ backgroundImage: bg }}
     >
       {/* Barra superior: progreso + cerrar */}
@@ -82,7 +82,7 @@ export function LessonPlayer({ lesson, next, bestScore }: Props) {
           {lesson.slides.map((_, i) => (
             <span key={i} className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/50">
               <motion.span
-                className="block h-full rounded-full bg-[#4A3540]/70"
+                className="block h-full rounded-full bg-foreground/70"
                 initial={false}
                 animate={{ width: phase.kind !== "story" || i <= phase.index ? "100%" : "0%" }}
                 transition={{ duration: 0.3 }}
@@ -205,7 +205,7 @@ export function LessonPlayer({ lesson, next, bestScore }: Props) {
                 {next ? (
                   <Link
                     href={`/leccion/${next.slug}`}
-                    className="flex h-14 items-center justify-center gap-1 rounded-full bg-brand px-6 text-lg font-semibold text-white shadow-glow active:scale-[0.98]"
+                    className="flex h-14 items-center justify-center gap-1 rounded-full bg-brand px-6 text-lg font-semibold text-on-brand shadow-glow active:scale-[0.98]"
                   >
                     Siguiente: {next.title} <ChevronRight className="size-5" aria-hidden />
                   </Link>

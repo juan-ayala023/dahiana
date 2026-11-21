@@ -73,7 +73,7 @@ export function BudgetLimitSheet({ open, onClose, category, mes, current, spent 
               aria-pressed={limite === v}
               className={cn(
                 "flex h-11 items-center rounded-full px-4 text-sm font-semibold tabular",
-                limite === v ? "bg-primary-strong text-white" : "bg-white/80 shadow-soft",
+                limite === v ? "bg-primary-strong text-on-brand" : "bg-white/80 shadow-soft",
               )}
             >
               ${formatNumber(v)}

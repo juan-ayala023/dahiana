@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces, Nunito } from "next/font/google";
 import { Toaster } from "sonner";
 import { APP_NAME, APP_TAGLINE } from "@/lib/config";
+import { THEME_SCRIPT } from "@/lib/theme";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -24,10 +25,14 @@ export const metadata: Metadata = {
   appleWebApp: { capable: true, title: APP_NAME, statusBarStyle: "default" },
   formatDetection: { telephone: false },
   robots: { index: false, follow: false },
+  other: { "mobile-web-app-capable": "yes" },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FFF8F5",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FFF8F5" },
+    { media: "(prefers-color-scheme: dark)", color: "#1C1219" },
+  ],
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -35,11 +40,15 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es-CO" className={`${fraunces.variable} ${nunito.variable}`}>
+    <html lang="es-CO" className={`${fraunces.variable} ${nunito.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body>
         {children}
         <Toaster
           position="top-center"
+          visibleToasts={2}
           toastOptions={{
             classNames: {
               toast:
