@@ -3,18 +3,21 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Flower2, House, Plus, ReceiptText, type LucideIcon } from "lucide-react";
+import { Flower2, House, Plus, ReceiptText, Wallet, type LucideIcon } from "lucide-react";
 import { useTransactions } from "@/components/features/transactions/transactions-provider";
 import { cn, haptic } from "@/lib/utils";
 
 type NavItem = { href: string; label: string; icon: LucideIcon };
 
-/** Los módulos de las siguientes fases (Jardín, Presupuesto, Perfil…) se agregan aquí. */
+/** Dos a cada lado para que el botón + quede centrado. */
 const LEFT: NavItem[] = [
   { href: "/inicio", label: "Inicio", icon: House },
   { href: "/movimientos", label: "Movimientos", icon: ReceiptText },
 ];
-const RIGHT: NavItem[] = [{ href: "/jardin", label: "Jardín", icon: Flower2 }];
+const RIGHT: NavItem[] = [
+  { href: "/jardin", label: "Jardín", icon: Flower2 },
+  { href: "/presupuesto", label: "Presupuesto", icon: Wallet },
+];
 
 function NavLink({ item, active }: { item: NavItem; active: boolean }) {
   const Icon = item.icon;
@@ -22,7 +25,7 @@ function NavLink({ item, active }: { item: NavItem; active: boolean }) {
     <Link
       href={item.href}
       aria-current={active ? "page" : undefined}
-      className="relative flex min-h-14 flex-1 flex-col items-center justify-center gap-0.5 rounded-3xl text-xs font-bold"
+      className="relative flex min-h-14 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-3xl text-[11px] font-bold"
     >
       {active ? (
         <motion.span

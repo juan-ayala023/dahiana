@@ -20,3 +20,8 @@ export const transactionSchema = z.object({
 export type TransactionInput = z.input<typeof transactionSchema>;
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
+
+/** Aviso de presupuesto que devuelve el registro de un gasto. */
+export type BudgetAlert = { level: 80 | 100; categoria: string; emoji: string; restante: number };
+
+export type TransactionResult = { ok: true; alert?: BudgetAlert } | { ok: false; error: string };

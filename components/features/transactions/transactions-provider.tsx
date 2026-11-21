@@ -3,6 +3,7 @@
 import { createContext, startTransition, useCallback, useContext, useMemo, useOptimistic, useState } from "react";
 import { toast } from "sonner";
 import { createTransaction, deleteTransaction, updateTransaction } from "@/lib/actions/transactions";
+import { formatCOP } from "@/lib/finance/format";
 import { applyPendingOps, type PendingOp } from "@/lib/finance/transactions";
 import type { Category, TipoMovimiento, Transaction } from "@/types/database";
 import { QuickAddSheet } from "./quick-add-sheet";
@@ -61,6 +62,21 @@ export function TransactionsProvider({ categories, children }: { categories: Cat
         addOp({ type: mode === "create" ? "add" : "update", tx });
         const res = mode === "create" ? await createTransaction(input) : await updateTransaction(input);
         if (!res.ok) toast.error(res.error);
+        else if (res.alert) {
+          const { level, emoji, categoria, restante } = res.alert;
+          toast(
+            level === 80
+              ? `${emoji} Ojo: ya vas en más del 80% de ${categoria}`
+              : `${emoji} Pasaste el límite de ${categoria} este mes`,
+            {
+              description:
+                level === 80
+                  ? `Te quedan ${formatCOP(Math.max(0, restante))} para lo que resta del mes 👀`
+                  : "Tranqui, no pasa nada. Mira tu presupuesto y ajustamos 🫶",
+              duration: 6000,
+            },
+          );
+        }
       });
     },
     [addOp],

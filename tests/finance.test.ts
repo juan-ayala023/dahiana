@@ -109,3 +109,33 @@ test("ahorro sugerido por quincena hasta la fecha objetivo", () => {
     null,
   );
 });
+
+import { budgetStatus, crossedThreshold, rule503020 } from "../lib/finance/budget.ts";
+
+test("estado del límite: verde, durazno y coral", () => {
+  assert.equal(budgetStatus(60_000, 100_000).level, "ok");
+  assert.equal(budgetStatus(70_000, 100_000).level, "warn");
+  assert.equal(budgetStatus(100_000, 100_000).level, "warn");
+  assert.equal(budgetStatus(100_001, 100_000).level, "over");
+  assert.equal(budgetStatus(30_000, 100_000).remaining, 70_000);
+});
+
+test("regla 50/30/20", () => {
+  const rows = rule503020(2_000_000, { necesidad: 800_000, gusto: 300_000, ahorro: 100_000 });
+  assert.deepEqual(
+    rows.map((r) => [r.clase, r.target, Math.round(r.pct)]),
+    [
+      ["necesidad", 1_000_000, 80],
+      ["gusto", 600_000, 50],
+      ["ahorro", 400_000, 25],
+    ],
+  );
+});
+
+test("alerta al cruzar 80% y 100%", () => {
+  assert.equal(crossedThreshold(70_000, 85_000, 100_000), 80);
+  assert.equal(crossedThreshold(85_000, 90_000, 100_000), null);
+  assert.equal(crossedThreshold(90_000, 120_000, 100_000), 100);
+  assert.equal(crossedThreshold(50_000, 120_000, 100_000), 100);
+  assert.equal(crossedThreshold(110_000, 130_000, 100_000), null);
+});

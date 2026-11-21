@@ -100,6 +100,39 @@ export async function getGoalDetail(
   return { goal: normalizeGoal(goal.data), contributions: contributions.data ?? [] };
 }
 
+export type BudgetData = {
+  budgets: Tables<"budgets">[];
+  previousBudgetsCount: number;
+  transactions: Transaction[];
+  ahorradoMes: number;
+  recurring: Tables<"recurring_expenses">[];
+};
+
+export async function getBudgetData(monthKey: string, previousMonthKey: string): Promise<BudgetData> {
+  const { start, end } = monthBounds(monthKey);
+  const prevStart = monthBounds(previousMonthKey).start;
+  const supabase = await createClient();
+
+  const [budgets, prev, tx, contrib, rec] = await Promise.all([
+    supabase.from("budgets").select("*").eq("mes", start),
+    supabase.from("budgets").select("id", { count: "exact", head: true }).eq("mes", prevStart),
+    supabase.from("transactions").select("*").gte("fecha", start).lt("fecha", end),
+    supabase.from("goal_contributions").select("monto").gte("fecha", start).lt("fecha", end),
+    supabase.from("recurring_expenses").select("*").order("dia_mes").order("nombre"),
+  ]);
+
+  const failed = [budgets, tx, rec].find((r) => r.error);
+  if (failed?.error) throw new Error(`No se pudo cargar el presupuesto: ${failed.error.message}`);
+
+  return {
+    budgets: budgets.data ?? [],
+    previousBudgetsCount: prev.count ?? 0,
+    transactions: tx.data ?? [],
+    ahorradoMes: (contrib.data ?? []).reduce((s, c) => s + c.monto, 0),
+    recurring: rec.data ?? [],
+  };
+}
+
 export async function getMonthTransactions(monthKey: string): Promise<Transaction[]> {
   const { start, end } = monthBounds(monthKey);
   const supabase = await createClient();
