@@ -3,15 +3,18 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { House, Plus, ReceiptText, type LucideIcon } from "lucide-react";
+import { Flower2, House, Plus, ReceiptText, type LucideIcon } from "lucide-react";
 import { useTransactions } from "@/components/features/transactions/transactions-provider";
 import { cn, haptic } from "@/lib/utils";
 
 type NavItem = { href: string; label: string; icon: LucideIcon };
 
 /** Los módulos de las siguientes fases (Jardín, Presupuesto, Perfil…) se agregan aquí. */
-const LEFT: NavItem[] = [{ href: "/inicio", label: "Inicio", icon: House }];
-const RIGHT: NavItem[] = [{ href: "/movimientos", label: "Movimientos", icon: ReceiptText }];
+const LEFT: NavItem[] = [
+  { href: "/inicio", label: "Inicio", icon: House },
+  { href: "/movimientos", label: "Movimientos", icon: ReceiptText },
+];
+const RIGHT: NavItem[] = [{ href: "/jardin", label: "Jardín", icon: Flower2 }];
 
 function NavLink({ item, active }: { item: NavItem; active: boolean }) {
   const Icon = item.icon;

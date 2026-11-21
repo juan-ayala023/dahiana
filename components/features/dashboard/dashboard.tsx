@@ -18,10 +18,10 @@ import { currentPeriod, expectedIncomeForPeriod, pendingFixedExpenses } from "@/
 import { totals } from "@/lib/finance/transactions";
 import { cn } from "@/lib/utils";
 import type { Profile } from "@/types/database";
+import { GoalFlower } from "@/components/features/garden/goal-flower";
 import { CategoryDonut, type DonutSlice } from "./category-donut";
 import { HeroAllowance } from "./hero-allowance";
 
-const STAGE_EMOJI = ["🌰", "🌱", "🌿", "🌷", "🌸"] as const;
 
 type DashboardProps = {
   profile: Pick<Profile, "nombre" | "avatar_emoji" | "frecuencia_pago" | "dias_pago" | "ingreso_estimado">;
@@ -236,22 +236,24 @@ export function Dashboard({ profile, today, greeting, data }: DashboardProps) {
       {/* Mini jardín */}
       {data.goals.length > 0 ? (
         <motion.section {...fadeUp(7)} aria-labelledby="mini-jardin">
-          <h2 id="mini-jardin" className="mb-3 font-display text-xl font-semibold">
-            Mi jardín 🌷
-          </h2>
+          <div className="mb-3 flex items-center justify-between">
+            <h2 id="mini-jardin" className="font-display text-xl font-semibold">
+              Mi jardín 🌷
+            </h2>
+            <Link href="/jardin" className="flex min-h-11 items-center gap-0.5 text-sm font-bold text-primary-deep">
+              Ver jardín <ChevronRight className="size-4" aria-hidden />
+            </Link>
+          </div>
           <div className="-mx-5 flex gap-3 overflow-x-auto px-5 pb-2 scrollbar-none">
             {data.goals.map((g) => {
               const stage = goalStage(g.porcentaje);
               return (
-                <div key={g.id} className="flex w-40 shrink-0 flex-col gap-2 rounded-4xl bg-surface p-4 shadow-soft">
-                  <motion.span
-                    className="text-4xl"
-                    animate={{ rotate: [0, -6, 6, 0] }}
-                    transition={{ duration: 3, repeat: Infinity, repeatDelay: 2 }}
-                    aria-hidden
-                  >
-                    {STAGE_EMOJI[stage]}
-                  </motion.span>
+                <Link
+                  key={g.id}
+                  href={`/jardin/${g.id}`}
+                  className="flex w-40 shrink-0 flex-col gap-2 rounded-4xl bg-surface p-4 shadow-soft active:scale-[0.97]"
+                >
+                  <GoalFlower stage={stage} color={g.color} className="mx-auto size-20" sway={false} label={STAGE_LABELS[stage]} />
                   <p className="truncate font-bold">
                     {g.emoji} {g.nombre}
                   </p>
@@ -277,7 +279,7 @@ export function Dashboard({ profile, today, greeting, data }: DashboardProps) {
                   <p className="text-xs font-semibold tabular">
                     {formatCOP(g.monto_actual)} <span className="font-normal text-muted-foreground">de {formatCOP(g.monto_objetivo)}</span>
                   </p>
-                </div>
+                </Link>
               );
             })}
           </div>

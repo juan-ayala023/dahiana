@@ -66,6 +66,40 @@ export async function getDashboardData(from: string): Promise<DashboardData> {
   };
 }
 
+export type GoalProgress = Views<"savings_goals_progress">;
+
+const normalizeGoal = (g: GoalProgress): GoalProgress => ({ ...g, porcentaje: Number(g.porcentaje) });
+
+export async function getGarden(): Promise<{ goals: GoalProgress[]; fixedMonthly: number }> {
+  const supabase = await createClient();
+  const [goals, rec] = await Promise.all([
+    supabase.from("savings_goals_progress").select("*").order("created_at"),
+    supabase.from("recurring_expenses").select("monto").eq("activo", true),
+  ]);
+  if (goals.error) throw new Error(`No se pudo cargar el jardín: ${goals.error.message}`);
+  return {
+    goals: (goals.data ?? []).map(normalizeGoal),
+    fixedMonthly: (rec.data ?? []).reduce((s, r) => s + r.monto, 0),
+  };
+}
+
+export async function getGoalDetail(
+  id: string,
+): Promise<{ goal: GoalProgress; contributions: Tables<"goal_contributions">[] } | null> {
+  const supabase = await createClient();
+  const [goal, contributions] = await Promise.all([
+    supabase.from("savings_goals_progress").select("*").eq("id", id).maybeSingle(),
+    supabase
+      .from("goal_contributions")
+      .select("*")
+      .eq("goal_id", id)
+      .order("fecha", { ascending: false })
+      .order("created_at", { ascending: false }),
+  ]);
+  if (!goal.data) return null;
+  return { goal: normalizeGoal(goal.data), contributions: contributions.data ?? [] };
+}
+
 export async function getMonthTransactions(monthKey: string): Promise<Transaction[]> {
   const { start, end } = monthBounds(monthKey);
   const supabase = await createClient();
