@@ -31,6 +31,12 @@ Next.js 15 (App Router) · TypeScript estricto · Tailwind CSS v4 · componentes
    ```
    Abre `http://localhost:3000/entrar/<ACCESS_KEY>` una vez. Desde ahí la app entra directo.
 
+## Pruebas
+
+```bash
+npm test   # cálculos financieros (período, "hoy puedes gastar", metas)
+```
+
 ## Acceso sin login (una sola usuaria)
 
 - No hay correo, código ni contraseña para ella: abre su **enlace personal** (`/entrar/<ACCESS_KEY>`) una vez por dispositivo y la sesión queda guardada.
