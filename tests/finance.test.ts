@@ -139,3 +139,23 @@ test("alerta al cruzar 80% y 100%", () => {
   assert.equal(crossedThreshold(50_000, 120_000, 100_000), 100);
   assert.equal(crossedThreshold(110_000, 130_000, 100_000), null);
 });
+
+import { streakStats } from "../lib/finance/streak.ts";
+
+test("racha: viva si registró ayer aunque hoy no", () => {
+  const s = streakStats(["2026-11-18", "2026-11-19", "2026-11-20"], "2026-11-21");
+  assert.equal(s.current, 3);
+  assert.equal(s.registeredToday, false);
+});
+
+test("racha: se corta con un día sin registro", () => {
+  const s = streakStats(["2026-11-15", "2026-11-16", "2026-11-17", "2026-11-19", "2026-11-21"], "2026-11-21");
+  assert.equal(s.current, 1);
+  assert.equal(s.longest, 3);
+  assert.equal(s.registeredToday, true);
+});
+
+test("racha: cruza de mes y sin datos", () => {
+  assert.equal(streakStats(["2026-10-30", "2026-10-31", "2026-11-01"], "2026-11-01").current, 3);
+  assert.deepEqual(streakStats([], "2026-11-21"), { current: 0, longest: 0, registeredToday: false });
+});

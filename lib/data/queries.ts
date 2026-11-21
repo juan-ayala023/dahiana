@@ -133,6 +133,28 @@ export async function getBudgetData(monthKey: string, previousMonthKey: string):
   };
 }
 
+/** Lecciones completadas: slug → mejor puntaje del quiz. */
+export async function getLessonProgress(): Promise<Record<string, number>> {
+  const supabase = await createClient();
+  const { data } = await supabase.from("lesson_progress").select("lesson_slug, quiz_score");
+  return Object.fromEntries((data ?? []).map((l) => [l.lesson_slug, l.quiz_score ?? 0]));
+}
+
+export async function getAchievementsData(): Promise<{
+  unlocked: Record<string, string>;
+  dates: string[];
+}> {
+  const supabase = await createClient();
+  const [ach, tx] = await Promise.all([
+    supabase.from("achievements").select("codigo, desbloqueado_at"),
+    supabase.from("transactions").select("fecha").order("fecha", { ascending: false }).limit(3000),
+  ]);
+  return {
+    unlocked: Object.fromEntries((ach.data ?? []).map((a) => [a.codigo, a.desbloqueado_at])),
+    dates: [...new Set((tx.data ?? []).map((t) => t.fecha))],
+  };
+}
+
 export async function getMonthTransactions(monthKey: string): Promise<Transaction[]> {
   const { start, end } = monthBounds(monthKey);
   const supabase = await createClient();

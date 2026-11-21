@@ -1,6 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { announceAchievements } from "@/components/features/achievements/announce";
+import { streakStats } from "@/lib/finance/streak";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
@@ -28,6 +30,8 @@ type DashboardProps = {
   today: string;
   greeting: { text: string; emoji: string };
   data: DashboardData;
+  school: { done: number; total: number; next: { slug: string; title: string; minutes: number } | null };
+  justUnlocked: string[];
 };
 
 const fadeUp = (i: number) => ({
@@ -36,7 +40,7 @@ const fadeUp = (i: number) => ({
   transition: { delay: 0.05 * i, duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
 });
 
-export function Dashboard({ profile, today, greeting, data }: DashboardProps) {
+export function Dashboard({ profile, today, greeting, data, school, justUnlocked }: DashboardProps) {
   const { categoryById, withPending, openNew, openEdit } = useTransactions();
   const transactions = useMemo(() => withPending(data.transactions), [withPending, data.transactions]);
 
@@ -110,6 +114,12 @@ export function Dashboard({ profile, today, greeting, data }: DashboardProps) {
     };
   }, [transactions, profile, today, data.recurring, data.goals, data.contributions, month.start, month.end, prevMonth.start, categoryById]);
 
+  const streak = useMemo(() => streakStats(transactions.map((t) => t.fecha), today), [transactions, today]);
+
+  useEffect(() => {
+    announceAchievements(justUnlocked);
+  }, [justUnlocked]);
+
   const recent = transactions.slice(0, 5);
   const tip = tipOfTheDay(today);
   const mood =
@@ -145,6 +155,40 @@ export function Dashboard({ profile, today, greeting, data }: DashboardProps) {
         <MiniStat label="Ingresos" emoji="🌱" value={calc.monthTotals.ingresos} className="bg-income/25" valueClass="text-income-strong" />
         <MiniStat label="Gastos" emoji="🍂" value={calc.monthTotals.gastos} className="bg-expense/25" />
         <MiniStat label="Ahorrado" emoji="🐷" value={calc.ahorradoMes} className="bg-lavender/35" />
+      </motion.section>
+
+      {/* Racha + Escuelita */}
+      <motion.section {...fadeUp(3)} aria-label="Hábitos" className="grid grid-cols-2 gap-2">
+        <Link href="/logros" className="flex flex-col gap-1 rounded-3xl bg-surface p-4 shadow-soft active:scale-[0.97]">
+          <span className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
+            <motion.span
+              animate={streak.current > 0 ? { scale: [1, 1.2, 1] } : {}}
+              transition={{ duration: 1.4, repeat: Infinity, repeatDelay: 1 }}
+              aria-hidden
+            >
+              {streak.current > 0 ? "🔥" : "🌱"}
+            </motion.span>
+            Racha
+          </span>
+          <span className="font-display text-xl font-semibold tabular">
+            {streak.current} {streak.current === 1 ? "día" : "días"}
+          </span>
+          <span className="text-xs text-muted-foreground">
+            {streak.registeredToday ? "¡Hoy ya cuenta! ✨" : streak.current > 0 ? "Registra hoy para seguir" : "Empieza hoy"}
+          </span>
+        </Link>
+        <Link
+          href={school.next ? `/leccion/${school.next.slug}` : "/escuelita"}
+          className="flex flex-col gap-1 rounded-3xl bg-lavender/30 p-4 active:scale-[0.97]"
+        >
+          <span className="text-xs font-bold text-muted-foreground">
+            <span aria-hidden>🎓</span> Escuelita · {school.done}/{school.total}
+          </span>
+          <span className="line-clamp-2 font-bold leading-tight">
+            {school.next ? school.next.title : "¡Te graduaste! 📜"}
+          </span>
+          <span className="text-xs text-muted-foreground">{school.next ? `${school.next.minutes} min de lectura` : "Repasa cuando quieras"}</span>
+        </Link>
       </motion.section>
 
       {/* Insights */}

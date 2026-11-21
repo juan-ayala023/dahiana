@@ -12,7 +12,7 @@ import {
   type TransactionInput,
   type TransactionResult,
 } from "@/lib/validations/transaction";
-import { unlockAchievements } from "./achievements";
+import { syncAchievements } from "./achievements";
 
 const GENERIC_ERROR = "No pudimos guardar. Revisa tu conexión e intenta de nuevo 🌧️";
 
@@ -65,10 +65,10 @@ export async function createTransaction(input: TransactionInput): Promise<Transa
     return { ok: false, error: GENERIC_ERROR };
   }
 
-  const [alert] = await Promise.all([budgetAlertFor(supabase, parsed.data), unlockAchievements(supabase, ["primer_registro"])]);
+  const [alert, unlocked] = await Promise.all([budgetAlertFor(supabase, parsed.data), syncAchievements(supabase)]);
 
   revalidatePath("/", "layout");
-  return { ok: true, alert };
+  return { ok: true, alert, unlocked };
 }
 
 export async function updateTransaction(input: TransactionInput): Promise<TransactionResult> {

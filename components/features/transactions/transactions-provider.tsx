@@ -3,6 +3,7 @@
 import { createContext, startTransition, useCallback, useContext, useMemo, useOptimistic, useState } from "react";
 import { toast } from "sonner";
 import { createTransaction, deleteTransaction, updateTransaction } from "@/lib/actions/transactions";
+import { announceAchievements } from "@/components/features/achievements/announce";
 import { formatCOP } from "@/lib/finance/format";
 import { applyPendingOps, type PendingOp } from "@/lib/finance/transactions";
 import type { Category, TipoMovimiento, Transaction } from "@/types/database";
@@ -61,6 +62,7 @@ export function TransactionsProvider({ categories, children }: { categories: Cat
       startTransition(async () => {
         addOp({ type: mode === "create" ? "add" : "update", tx });
         const res = mode === "create" ? await createTransaction(input) : await updateTransaction(input);
+        if (res.ok && "unlocked" in res) announceAchievements(res.unlocked);
         if (!res.ok) toast.error(res.error);
         else if (res.alert) {
           const { level, emoji, categoria, restante } = res.alert;
